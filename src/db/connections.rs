@@ -2,7 +2,7 @@ use std::env;
 
 use dotenv::dotenv;
 use sqlx::mysql::MySqlPool;
-pub async fn create_pool(database_url: &str) -> Result<MySqlPool, sqlx::Error> {
+pub async fn create_pool() -> Result<MySqlPool, sqlx::Error> {
     // 加载环境变量
     dotenv().ok();
 

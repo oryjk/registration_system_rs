@@ -1,16 +1,13 @@
-use std::env;
-
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Route, Scope};
+use actix_web::{web, App, HttpServer};
 
 mod db;
 mod handlers;
+mod models;
 mod routes;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-
-    let pool = db::connections::create_pool(&database_url)
+    let pool = db::connections::create_pool()
         .await
         .expect("Failed to create pool");
 
@@ -19,7 +16,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .configure(routes::user::user_routes)
     })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }
