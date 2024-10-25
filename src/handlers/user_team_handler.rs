@@ -14,7 +14,7 @@ pub async fn bind_user_team(path: web::Path<UserTeam>, pool: web::Data<MySqlPool
     let china_tz: Tz = "Asia/Shanghai".parse().unwrap();
     let local_time = china_tz.from_utc_datetime(&Utc::now().naive_utc()).with_timezone(&Utc);
     let result: Result<_, sqlx::Error> =
-        sqlx::query("INSERT INTO rs_user_team (user_id, team_id, join_time) VALUES (?, ?, ?)")
+        sqlx::query("INSERT INTO rs_user_teams (user_id, team_id, join_time) VALUES (?, ?, ?)")
             .bind(&path.user_id)
             .bind(&path.team_id)
             .bind(&local_time)
