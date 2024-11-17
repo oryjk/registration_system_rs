@@ -20,7 +20,6 @@ pub async fn bind_user_team(path: web::Path<UserTeam>, pool: web::Data<MySqlPool
             .bind(&local_time)
             .execute(pool.get_ref())
             .await;
-
     match result {
         Ok(_) => HttpResponse::Ok().body("创建成功"),
         Err(_) => {

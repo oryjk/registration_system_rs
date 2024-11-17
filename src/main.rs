@@ -15,8 +15,9 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .configure(routes::user::user_routes)
+            .configure(routes::activity::activity_routes)
     })
-        .bind(("127.0.0.1", 8080))?
+        .bind(("127.0.0.1", 8082))?
         .run()
         .await
 }

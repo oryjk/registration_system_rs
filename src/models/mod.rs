@@ -1,2 +1,3 @@
 pub mod user;
-mod team;
+pub mod team;
+pub mod activity;
