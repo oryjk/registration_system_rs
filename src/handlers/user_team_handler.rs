@@ -14,9 +14,9 @@ struct MyResponse {
 // #[derive(Serialize)]
 struct UserTeamDO {
     id: i64,
-    user_id: String,
-    team_id: String,
-    join_time: NaiveDateTime,
+    user_id: Option<String>,
+    team_id: Option<String>,
+    join_time: Option<NaiveDateTime>,
 }
 
 // #[cfg(not(feature = "skip_db_check"))]
