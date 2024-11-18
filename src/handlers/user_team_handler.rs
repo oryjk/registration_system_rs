@@ -1,10 +1,9 @@
 use crate::models::user::UserTeam;
 use actix_web::http::header::ContentType;
 use actix_web::{web, HttpResponse};
-use chrono::{TimeZone, Utc};
+use chrono::{NaiveDateTime, TimeZone, Utc};
 use chrono_tz::Tz;
 use serde::Serialize;
-use sqlx::types::time::PrimitiveDateTime;
 use sqlx::MySqlPool;
 
 #[derive(Serialize)]
@@ -17,7 +16,7 @@ struct UserTeamDO {
     id: i64,
     user_id: String,
     team_id: String,
-    join_time: PrimitiveDateTime,
+    join_time: NaiveDateTime,
 }
 
 // #[cfg(not(feature = "skip_db_check"))]
