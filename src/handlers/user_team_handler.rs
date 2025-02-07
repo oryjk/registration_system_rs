@@ -1,10 +1,9 @@
 use crate::models::user::UserTeam;
 use actix_web::http::header::ContentType;
 use actix_web::{web, HttpResponse};
-use chrono::{TimeZone, Utc};
+use chrono::{NaiveDateTime, TimeZone, Utc};
 use chrono_tz::Tz;
-use serde::Serialize;
-use sqlx::types::time::PrimitiveDateTime;
+use serde::{Deserialize, Serialize};
 use sqlx::MySqlPool;
 
 #[derive(Serialize)]
@@ -12,12 +11,12 @@ struct MyResponse {
     key: String,
 }
 
-// #[derive(Serialize)]
+#[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Clone)]
 struct UserTeamDO {
     id: i64,
     user_id: String,
     team_id: String,
-    join_time: PrimitiveDateTime,
+    join_time: NaiveDateTime,
 }
 
 // #[cfg(not(feature = "skip_db_check"))]
@@ -49,10 +48,10 @@ pub async fn bind_user_team(path: web::Path<UserTeam>, pool: web::Data<MySqlPool
 // #[cfg(not(feature = "skip_db_check"))]
 pub async fn unbind_user_team(path: web::Path<UserTeam>, pool: web::Data<MySqlPool>) -> HttpResponse {
     let user_id = &path.user_id;
-    let team_id = &path.team_id;
+    let team_id = &path.team_id.to_string();
 
 
-    let user_team = sqlx::query_as!(UserTeamDO,"SELECT * FROM rs_user_team WHERE user_id=? AND team_id=?", user_id, team_id)
+    let user_team = sqlx::query_as!(UserTeamDO, "SELECT * FROM rs_user_team WHERE user_id=? AND team_id=?", user_id, team_id)
         .fetch_one(pool.get_ref())
         .await;
 
