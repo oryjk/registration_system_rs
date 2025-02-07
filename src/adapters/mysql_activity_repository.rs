@@ -10,9 +10,9 @@ pub struct MySqlActivityRepository {
 }
 
 impl MySqlActivityRepository {
-    // pub fn new(pool: MySqlPool) -> Self {
-    //     MySqlActivityRepository { pool }
-    // }
+    pub fn new(pool: MySqlPool) -> Self {
+        MySqlActivityRepository { pool }
+    }
 }
 
 #[async_trait]

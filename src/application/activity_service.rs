@@ -7,9 +7,9 @@ pub struct ActivityService<R: ActivityRepository> {
 }
 
 impl<R: ActivityRepository> ActivityService<R> {
-    // pub fn new(repository: R) -> Self {
-    //     ActivityService { repository }
-    // }
+    pub fn new(repository: R) -> Self {
+        ActivityService { repository }
+    }
 
     pub async fn get_activity(&self, id: &str) -> Result<Option<Activity>, Box<dyn std::error::Error>> {
         self.repository.get_activity(id).await
