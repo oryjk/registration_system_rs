@@ -1,19 +1,19 @@
-use actix_web::{web, App, HttpServer};
-use dotenv::dotenv;
-use std::env;
+use crate::adapters::mysql_activity_repository::MySqlActivityRepository;
+use crate::application::activity_service::ActivityService;
 use actix_cors::Cors;
 use actix_web::middleware::Logger;
 use actix_web::web::Data;
-use crate::adapters::mysql_activity_repository::MySqlActivityRepository;
-use crate::application::activity_service::ActivityService;
+use actix_web::{App, HttpServer};
+use dotenv::dotenv;
+use std::env;
 
+mod adapters;
+mod application;
 mod db;
 mod handlers;
 mod models;
-mod routes;
 mod ports;
-mod adapters;
-mod application;
+mod routes;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -37,13 +37,13 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::permissive(); // 允许所有来源的请求 (不安全，仅用于开发)
         App::new()
             .wrap(Logger::default())
-            .wrap(cors)  // 添加 CORS 中间件
+            .wrap(cors) // 添加 CORS 中间件
             .app_data(activity_service_data.clone()) // 重要：使用 .clone() 创建共享的所有权
-            .app_data(web::Data::new(pool.clone()))
+            .app_data(Data::new(pool.clone()))
             .configure(routes::user::user_routes)
             .configure(routes::activity::activity_routes)
     })
-        .bind(("127.0.0.1", server_port))?
-        .run()
-        .await
+    .bind(("127.0.0.1", server_port))?
+    .run()
+    .await
 }
