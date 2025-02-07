@@ -2,14 +2,29 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-#[derive(Debug, Deserialize, Serialize, FromRow, Clone)]
+#[derive(Debug, FromRow, Serialize, Deserialize)]
 pub struct Activity {
-    pub id: String,
-    pub cover: Option<String>,
-    pub end_time: Option<NaiveDateTime>, // Use NaiveDateTime initially
-    pub holding_date: Option<NaiveDateTime>, // Use NaiveDateTime initially
-    pub location: Option<String>,
-    pub name: Option<String>,
-    pub start_time: Option<NaiveDateTime>, // Use NaiveDateTime initially
-    pub status: i32,
+    pub(crate) id: String,
+    pub(crate) cover: Option<String>,
+    pub(crate) end_time: Option<NaiveDateTime>,
+    pub(crate) holding_date: Option<NaiveDateTime>,
+    pub(crate) location: Option<String>,
+    pub(crate) name: Option<String>,
+    pub(crate) start_time: Option<NaiveDateTime>,
+    pub(crate) status: i32,
+}
+
+
+#[derive(Debug, FromRow, Serialize, Deserialize, Clone)]
+pub struct ActivityInfo {
+    pub(crate) activity_id: String,
+    pub(crate) color: Option<String>,
+    pub(crate) opposing: Option<String>,
+    pub(crate) opposing_color: Option<String>,
+}
+
+#[derive(Serialize)]
+pub struct ActivityWithInfo {
+    pub activity: Activity,
+    pub activity_info: Option<ActivityInfo>,
 }
